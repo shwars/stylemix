@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8"/>
+<head>
+  <title>Stable Diffusion Style Mix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+</head>
+<style>
+  body { font-family: Lora; font-size: 14pt; margin: 20px; }
+  select { font-size: 18pt; }
+  fieldset { border-radius: 10pt; border: 1px dashed black;}
+</style>
+<script>
+  function rot(e)
+  {
+    s = e.src;
+    i = (s[s.length-5]);
+    switch(i){
+      case '0' : i='1'; break;
+      case '1' : i='2'; break;
+      case '2' : i='0'; break;
+    }
+    e.src=s.substring(0,s.length-5)+i+'.png';
+    console.log(e.src);
+  }
+
+  function proc()
+  {
+    var ee = document.getElementById("typex");
+    var a = ee.options[ee.selectedIndex].text;
+    var s = "<table>";
+    var ar = ['Utagawa Hiroshige','Paul Klee','Marc Chagall','Andy Warhol','Vincent Van Gogh','Wassily Kandinsky',
+  'Georges Seurat','Andrei Rublev','Kazimir Malevich','Conrad Roset','Takashi Murakami',
+  'Banksy','M.C. Escher','Paul Cézanne','Jaume Plensa','Henri de Toulouse-Lautrec','Paul Gauguin',
+  'Claude Monet','Francisco De Goya','Pablo Picasso','Edvard Munch','Natalia Goncharova',
+  'Leonardo Da Vinci','Pierre-Auguste Renoir','Francisco Goya','David Bowie','Sandro Botticelli',
+  'Studio Ghibli','Alfonse Mucha','Jackson Pollock','Ivan Aivazovsky','Egon Schiele',
+  'Patrick Dougherty','Andreas Gursky','Fujishima Takeji'];
+    var sel = ar.filter(x=>document.getElementById(x.replaceAll(' ','_')).checked,ar);
+    s+="<tr><td></td>";
+    sel.forEach(x => {
+      s+="<td>"+x+"</td>";
+    });
+    s+="</tr>";
+    sel.forEach(a1 => {
+      s+="<tr><td>"+a1+"</td>";
+      sel.forEach(a2 => {
+        fn = a.replaceAll(' ','_')+',_by_';
+        if (a1==a2) { fn+= a1.replaceAll(' ','_'); }
+        else { fn+= a1.replaceAll(' ','_')+"_and_"+a2.replaceAll(' ','_'); }
+        fn+="_0.png";
+        s+="<td><img width=\"100\" height=\"100\" src=\"img/"+fn+"\" onclick=\"rot(this)\"/></td>";
+      });
+      s+="</tr>";
+    });
+    s+="</table>";
+    document.body.innerHTML=s;
+  }
+</script>
+<body>
+<div id="content"></div>
+<h1>Stable Diffusion Style Mixer</h1>
+<p>This application will allow you to see how styles of different painters can be mixed together by using Stable Diffusion 1.5.</p>
+<p>To begin, select the prompt from drop-down below, and select a few artists using checkboxes. We do not recommend selecting more than 5-10 items at a time, in order not to get a page which is too overcrowded.</p>
+<p>When you are ready - press "Take me to the matrix" button. You will be taken to a page with picture matrix. Clicking on each picture will cycle through 3 different images generated.</p>
+<p>This style matrix was created by <a href="http://soshnikov.com">Dmitry Soshnikov</a>.</p>
+      <form>
+        <fieldset>
+          <label for="typex">Prompt: </label>
+        <select id="typex">
+		<option>beautiful young girl with long hair and clever look</option>
+		<option>an innocent child</option>
+     		<option>autumn rural landscape</option>
+     		<option>an old man wearing glasses</option>
+     		<option>poster for a movie called love affair</option>
+     		<option>abstract art painting called loneliness</option>
+     		<option>technical plan drawing of a building</option>
+     		<option>a notebook with calligraphic letters</option>
+        </select>
+      </fieldset>
+      <fieldset>
+        <b fontsize="+1">Chose artists (<10):</b><br/>
+        <div><input type="checkbox" id="Utagawa_Hiroshige"><label for="Utagawa_Hiroshige">Utagawa Hiroshige</label></div>
+        <div><input type="checkbox" id="Paul_Klee"><label for="Paul_Klee">Paul Klee</label></div>
+        <div><input type="checkbox" id="Marc_Chagall"><label for="Marc_Chagall">Marc Chagall</label></div>
+        <div><input type="checkbox" id="Andy_Warhol"><label for="Andy_Warhol">Andy Warhol</label></div>
+        <div><input type="checkbox" id="Vincent_Van_Gogh"><label for="Vincent_Van_Gogh">Vincent Van Gogh</label></div>
+        <div><input type="checkbox" id="Wassily_Kandinsky"><label for="Wassily_Kandinsky">Wassily Kandinsky</label></div>
+        <div><input type="checkbox" id="Georges_Seurat"><label for="Georges_Seurat">Georges Seurat</label></div>
+        <div><input type="checkbox" id="Andrei_Rublev"><label for="Andrei_Rublev">Andrei Rublev</label></div>
+        <div><input type="checkbox" id="Kazimir_Malevich"><label for="Kazimir_Malevich">Kazimir Malevich</label></div>
+        <div><input type="checkbox" id="Conrad_Roset"><label for="Conrad_Roset">Conrad Roset</label></div>
+        <div><input type="checkbox" id="Takashi_Murakami"><label for="Takashi_Murakami">Takashi Murakami</label></div>
+        <div><input type="checkbox" id="Banksy"><label for="Banksy">Banksy</label></div>
+        <div><input type="checkbox" id="M.C._Escher"><label for="M.C._Escher">M.C. Escher</label></div>
+        <div><input type="checkbox" id="Paul_Cézanne"><label for="Paul_Cézanne">Paul Cézanne</label></div>
+        <div><input type="checkbox" id="Jaume_Plensa"><label for="Jaume_Plensa">Jaume Plensa</label></div>
+        <div><input type="checkbox" id="Henri_de_Toulouse-Lautrec"><label for="Henri_de_Toulouse-Lautrec">Henri de Toulouse-Lautrec</label></div>
+        <div><input type="checkbox" id="Paul_Gauguin"><label for="Paul_Gauguin">Paul Gauguin</label></div>
+        <div><input type="checkbox" id="Claude_Monet"><label for="Claude_Monet">Claude Monet</label></div>
+        <div><input type="checkbox" id="Francisco_De_Goya"><label for="Francisco_De_Goya">Francisco De Goya</label></div>
+        <div><input type="checkbox" id="Pablo_Picasso"><label for="Pablo_Picasso">Pablo Picasso</label></div>
+        <div><input type="checkbox" id="Edvard_Munch"><label for="Edvard_Munch">Edvard Munch</label></div>
+        <div><input type="checkbox" id="Natalia_Goncharova"><label for="Natalia_Goncharova">Natalia Goncharova</label></div>
+        <div><input type="checkbox" id="Leonardo_Da_Vinci"><label for="Leonardo_Da_Vinci">Leonardo Da Vinci</label></div>
+        <div><input type="checkbox" id="Pierre-Auguste_Renoir"><label for="Pierre-Auguste_Renoir">Pierre-Auguste Renoir</label></div>
+        <div><input type="checkbox" id="Francisco_Goya"><label for="Francisco_Goya">Francisco Goya</label></div>
+        <div><input type="checkbox" id="David_Bowie"><label for="David_Bowie">David Bowie</label></div>
+        <div><input type="checkbox" id="Sandro_Botticelli"><label for="Sandro_Botticelli">Sandro Botticelli</label></div>
+        <div><input type="checkbox" id="Studio_Ghibli"><label for="Studio_Ghibli">Studio Ghibli</label></div>
+        <div><input type="checkbox" id="Alfonse_Mucha"><label for="Alfonse_Mucha">Alfonse Mucha</label></div>
+        <div><input type="checkbox" id="Jackson_Pollock"><label for="Jackson_Pollock">Jackson Pollock</label></div>
+        <div><input type="checkbox" id="Ivan_Aivazovsky"><label for="Ivan_Aivazovsky">Ivan Aivazovsky</label></div>
+        <div><input type="checkbox" id="Egon_Schiele"><label for="Egon_Schiele">Egon Schiele</label></div>
+        <div><input type="checkbox" id="Patrick_Dougherty"><label for="Patrick_Dougherty">Patrick Dougherty</label></div>
+        <div><input type="checkbox" id="Andreas_Gursky"><label for="Andreas_Gursky">Andreas Gursky</label></div>
+        <div><input type="checkbox" id="Fujishima_Takeji"><label for="Fujishima_Takeji">Fujishima Takeji</label></div>
+      </fieldset>
+        <button onClick="proc()">Take me to the matrix</button>        
+      </form>
+</body>
+
+</html>
